@@ -1,0 +1,48 @@
+name: CICD
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run tests
+        run: |
+          pytest
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image
+        run: docker build -t joubina/smartmoveia .
+      - name: Publish image to Docker Hub
+        run: docker push joubina/smartmoveia:latest
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Delete old container
+        run: sudo docker rm -f smartmovecontainer
+
+      - name: Remove old image
+        run: sudo docker image prune -f
+
+      - name: Pull Image from Docker Hub
+        run: sudo docker pull joubina/smartmoveia:latest
+        
+      - name: Run Docker Container
+        run: |
+            sudo docker run -d -p 8080:8080 --name smartmovecontainer joubina/smartmoveia
