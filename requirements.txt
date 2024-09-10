@@ -1,4 +1,4 @@
-Flask==2.3.3  # O la versión que necesites
-Werkzeug==2.3.0  # O la versión compatible con tu versión de Flask
+Flask==2.3.3
+Werkzeug>=2.3.7
 numpy==1.24.0
 scikit-learn==1.2.0
