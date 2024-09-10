@@ -33,7 +33,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Delete old container
-        run: sudo docker rm -f smartmovecontainer
+        run: sudo docker rm -f smartmovecontaineria
 
       - name: Remove old image
         run: sudo docker image prune -f
@@ -43,5 +43,5 @@ jobs:
 
       - name: Run Docker Container
         run: |
-            sudo docker run -d -p 5000:5000 --name smartmovecontainer joubina/smartmoveia
+            sudo docker run -d -p 5000:5000 --name smartmovecontaineria joubina/smartmoveia
 
