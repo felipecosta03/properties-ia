@@ -28,6 +28,7 @@ jobs:
       - name: Publish image to Docker Hub
         run: docker push joubina/smartmoveia:latest
 
+        
   deploy:
     needs: build
     runs-on: self-hosted
