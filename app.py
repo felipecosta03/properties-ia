@@ -40,4 +40,4 @@ def predict():
 if __name__ == '__main__':
   print("Starting Python Flask Server For Home Price Prediction...")
   util.load_saved_artifacts()
-  app.run()
+  app.run(host='0.0.0.0', port=5000)
